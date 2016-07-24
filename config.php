@@ -1,42 +1,46 @@
 <?
-
-$dbmsHost = 'localhost'; // ¶Ç´Â 127.0.0.1
-$dbmsID = 'root';
+$dbmsHost = 'localhost'; // ë˜ëŠ” 127.0.0.1
+$dbmsId = 'root';
 $dbmsPw = 'apmsetup';
-$dbName = 'blog';
+$dbName = 'school';
 
-//DB ¿¬°á
-$link = mysqli_connect($dbmsHost, $dbmsID, $dbmsPw, $dbName) or die();
+// DB ì—°ê²°
+$link = mysqli_connect($dbmsHost,
+$dbmsId, $dbmsPw, $dbName) or die();
 
-//DB¿¬°áÀ» utf-8 ¸ðµå·Î ¼³Á¤ 
+// DB ì—°ê²°ì„ UTF-8 ëª¨ë“œë¡œ ì„¤ì •
 mysqli_query($link, "SET NAMES utf8;");
 
-//»ç¿ë¹ý : 
-function getrows($sql){
- // ¿ÜºÎ¿¡ ÀÖ´Â $link º¯¼ö¸¦ ÇÔ¼ö¾È¿¡¼­ »ç¿ëÇÏ°Ú´Ù´Â ÀÇ¹Ì
+// ì‚¬ìš©ë²• : $rows = getRows("SELECT * FROM article");
+function getRows($sql) {
+	// ì™¸ë¶€ì— ìžˆëŠ” $link ë³€ìˆ˜ë¥¼ í•¨ìˆ˜ì•ˆì—ì„œ ì‚¬ìš©í•˜ê² ë‹¤ëŠ” ì˜ë¯¸
 	global $link;
 
-	// ºó ¹è¿­¼±¾ð
+    // ë¹ˆ ë°°ì—´ì„ ì–¸
 	$rows = array();
 
-	//SELECT * FROM artile Äõ¸® ½ÇÇà
+	// SELECT * FROM article ì¿¼ë¦¬ ì‹¤í–‰
 	$result = mysqli_query($link, $sql);
-	
-	if ( $result === true) {
-	
+
+	if ( $result === true ) {
 		return null;
+	}
 	
-	} 
-	
-	//Äõ¸® °á°ú¸¦ ¸ÊÀ¸·Î ¹Þ¾Æ¿À±â
-	while ( $row = mysqli_fetch_assoc($result) ){
+	// ì¿¼ë¦¬ ê²°ê³¼ë¥¼ ë§µìœ¼ë¡œ ë°›ì•„ì˜¤ê¸°
+	while ( $row = mysqli_fetch_assoc($result) ) {
 		$rows[] = $row;
 	}
 
 	return $rows;
 }
 
-// »ç¿ë¹ý : execute("DELETE FROM article");
-function execute($sql){
+function getRow($sql) {
+	list($row) = getRows($sql);
+
+	return $row;
+}
+
+// ì‚¬ìš©ë²• : execute("DELETE FROM article");
+function execute($sql) {
 	getRows($sql);
 }

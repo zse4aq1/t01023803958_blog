@@ -1,62 +1,17 @@
-<?
+<?php
 include 'config.php';
-include 'header.php';
 
-$name = "김건우";
-
-$articles = getRows("SELECT * FROM article ORDER BY id DESC");
-
+$rows = getRows("SELECT * FROM article ORDER BY id DESC LIMIT 100");
 ?>
-
-<h1><?=$name?> 블로그 게시물 리스트입니다.</h1>
-
-<table border="1">
-<thead>
-<tr>
-	<th>번호</th>
-	<th>작성자</th>
-	<th>내용</th>
-	<th>날짜</th>
-	<th>비고</th>
-</tr>
-</thead>
-
-<script>
-function deleteArticle(btn){
-	if (confirm('삭제하시겠습니까?') == false ) 
-	{
-		return;
-	}
-		var $clickedBtn = $(btn);
-		var $listItem = $clickedBtn.closest('tr');
-		$listItem.remove();
-
-		var id = $listItem.data('id');
-
-		$.post(
-			'/service/article/delete.php',
-			{'id' : id},
-			function(data) {
-				alert(data.id + '가 삭제되었습니다.');
-			},
-			'json'
-		);
-	}
-
-</script>
-<tbody>
-<? foreach ( $articles as $article ) { ?>
-<tr data-id="<?=$article['id']?>">
-	<td><?=$article['id']?></td>
-	<td><?=$article['writer']?></td>
-	<td><?=$article['body']?></td>
-	<td><?=$article['regDate']?></td>
-	<td><button onclick="deleteArticle(this)">삭제</button></td>
-</tr>
+<meta charset="utf-8">
+<h1>리스트 페이지</h1>
+<? foreach ( $rows as $row ) { ?>
+ID : <?=$row['id']?><br>
+등록날짜 : <?=$row['regDate']?><br>
+조회수 : <?=$row['viewCnt']?><br>
+제목 : <?=$row['title']?><br>
+<a href="detail.php?id=<?=$row['id']?>">상세페이지로 이동</a>
+<a href="perform_delete.php?id=<?=$row['id']?>">삭제</a>
+<hr>
 <? } ?>
-</tbody>
-</table>
-
-<?
-include 'footer.php';
-?>
+<a href="add.php">생성</a>
